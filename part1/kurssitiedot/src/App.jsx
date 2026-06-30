@@ -1,17 +1,30 @@
 const App = () => {
-  const course = 'Half Stack application development'
+  const course ={
+    name: 'Half Stack application development',
+    
+    parts: [
+      {
+        name: 'Fundamentals of React',
+        exercises: 10
+      },
+      {
+        name: 'Using props to pass data',
+        exercises: 7
+      },
+      {
+        name: 'State of a component', 
+        exercises: 14
+      }
+    ]
+  }
 
-  const part1 = <Part partName = {'Fundamentals of React'} exercises = {10}/>
-  const part2 = <Part partName = {'Using props to pass data'} exercises = {7}/>
-  const part3 = <Part partName = {'State of a component'} exercises = {14}/>
-
-  let parts = [part1, part2, part3]
+  
   return (
     
     <div>
-      <Header courseName = 'Half Stack application development'/>
-      <Content partList = {parts}/>
-      <Total exercises = {[part1.props.exercises, part2.props.exercises, part3.props.exercises]}/>
+      <Header courseName = {course.name}/>
+      <Content parts = {course.parts}/>
+      <Total parts = {course.parts}/>
     </div>
   )
 }
@@ -22,26 +35,23 @@ const Header = (props) => {
 
 const Content = (props) => {
   
-  console.log(props.partList[0].props.partName)
   return (
     <div>
-      <p>{props.partList[0].props.partName} {props.partList[0].props.exercises}</p>
-      <p>{props.partList[1].props.partName} {props.partList[1].props.exercises}</p>
-      <p>{props.partList[2].props.partName} {props.partList[2].props.exercises}</p>
+      <p>{props.parts[0].name} {props.parts[0].exercises}</p>
+      <p>{props.parts[1].name} {props.parts[1].exercises}</p>
+      <p>{props.parts[2].name} {props.parts[2].exercises}</p>
     </div>
   )
 
 }
 
 const Total = (props) => {
+
   return (
-      <p>Number of exercises: {props.exercises[0] + props.exercises[1] + props.exercises[2]}</p>
+      <p>Number of exercises: {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
   )
 }
 
-const Part = (props) => {
-  return <p>{props.partName} {props.exercises}</p>
-}
 
 
 export default App
