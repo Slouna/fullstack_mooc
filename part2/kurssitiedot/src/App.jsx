@@ -91,9 +91,9 @@ const App = () => {
   return (
     <div>
       {courses.map(course =>
-        <li key={course.id}>
+        <div key={course.id}>
           < Course course={course} />
-        </li>)}
+        </div>)}
     </div>
   )
 }
