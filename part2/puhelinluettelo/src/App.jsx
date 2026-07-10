@@ -13,11 +13,21 @@ const App = () => {
 
   const addPerson = (event) =>{
     event.preventDefault()
-    const personObject = {
-      name: newName,
-      number: '123',
+    for(let i = 0; i < persons.length; i++){
+      if(newName === persons[i].name){
+        alert(`${newName} is already added`)
+        break;
+        
+      } else if(i === persons.length - 1){
+        const personObject = {
+          name: newName,
+          number: '123',
+        }
+        setPersons(persons.concat(personObject))
+
+      }
     }
-    setPersons(persons.concat(personObject))
+    
     setNewName('')
   }
 const handleAddingPerson = (event) =>{
