@@ -1,5 +1,7 @@
 import { useState } from 'react'
 
+//TODO: vain yksi lista näkyvissä, refaktorointi
+
 const App = () => {
   
   const [newName, setNewName] = useState('')
@@ -45,6 +47,8 @@ const handleAddingNumber = (event) =>{
   return (
     <div>
       <h2>Phonebook</h2>
+      <Filter persons = {persons} />
+      <h3>Add new</h3>
       <form onSubmit={addPerson}>
         <div>
           name: <input value={newName}
@@ -57,7 +61,7 @@ const handleAddingNumber = (event) =>{
           <button type="submit">add</button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <h3>Numbers</h3>
       {persons.map(person =>
         <div key={person.name}>
           {person.name} {person.number}
@@ -65,6 +69,34 @@ const handleAddingNumber = (event) =>{
     </div>
   )
 
+}
+
+const Filter = (props) =>{
+  //tapahtuman käsittelijä
+  const [searchTerms, setSearchTerms] = useState('')
+
+  const search = (event) => {
+    event.preventDefault()
+    setSearchTerms(event.target.value)
+  
+  }
+  
+
+  return(
+    <div >
+      <form onChange={search}>
+        <div>
+          Type to filter: <input value={searchTerms}
+          onChange={search} />
+          </div> 
+      </form>
+      {(props.persons.filter((person) => 
+      person.name.toLowerCase().includes(searchTerms.toLowerCase()))).map(person =>
+        <div key={person.name}>{person.name}</div>)}
+    
+    </div>
+    
+  )
 }
 
 export default App
