@@ -6,6 +6,9 @@ const App = () => {
   
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
+  const [searchTerms, setSearchTerms] = useState('')
+
+  
 
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '040-123456' },
@@ -14,6 +17,12 @@ const App = () => {
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
 
+  const search = (event) => {
+    console.log(event.target.value)
+    event.preventDefault()
+    setSearchTerms(event.target.value)
+  
+  }
   const addPerson = (event) =>{
     event.preventDefault()
     for(let i = 0; i < persons.length; i++){
@@ -47,53 +56,57 @@ const handleAddingNumber = (event) =>{
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter persons = {persons} />
+      <Filter persons = {persons} onChange = {search} value = {searchTerms} />
+    
       <h3>Add new</h3>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName}
-          onChange={handleAddingPerson} />
-        </div>
-        <div>
-          number: <input value={newNumber} 
-          onChange={handleAddingNumber}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+      <PersonForm name = {newName} number = {newNumber} handleSubmit ={addPerson} handleAddingNumber = {handleAddingNumber} handleAddingPerson = {handleAddingPerson}/>
+      
       <h3>Numbers</h3>
-      {persons.map(person =>
-        <div key={person.name}>
-          {person.name} {person.number}
-          </div>)}
+      <Numbers persons = {persons} searchTerms = {searchTerms}/>
+
+      
     </div>
   )
 
 }
 
-const Filter = (props) =>{
-  //tapahtuman käsittelijä
-  const [searchTerms, setSearchTerms] = useState('')
+const Numbers = (props) =>{
+  return(
+    <div>
+      {(props.persons.filter((person) => 
+      person.name.toLowerCase().includes(props.searchTerms.toLowerCase()))).map(person =>
+        <div key={person.name}>{person.name} {person.number}</div>)}
+    </div>
+  )
+}
 
-  const search = (event) => {
-    event.preventDefault()
-    setSearchTerms(event.target.value)
-  
-  }
-  
+const PersonForm = (props) => {
+  return(
+  <form onSubmit={props.handleSubmit}>
+        <div>
+          name: <input value={props.name}
+          onChange={props.handleAddingPerson} />
+        </div>
+        <div>
+          number: <input value={props.number} 
+          onChange={props.handleAddingNumber}/></div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+    </form>
+  )
+}
+
+const Filter = (props) =>{
 
   return(
     <div >
-      <form onChange={search}>
+      <form onChange={props.onChange} onSubmit={e => { e.preventDefault(); }}>
         <div>
-          Type to filter: <input value={searchTerms}
-          onChange={search} />
+          Type to filter: <input value={props.value}
+          onChange={props.onChange} />
           </div> 
       </form>
-      {(props.persons.filter((person) => 
-      person.name.toLowerCase().includes(searchTerms.toLowerCase()))).map(person =>
-        <div key={person.name}>{person.name}</div>)}
-    
     </div>
     
   )
