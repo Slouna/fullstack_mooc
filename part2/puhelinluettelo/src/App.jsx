@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 import personService from './services/persons'
+import Notification from './components/Notification'
+
 
 //TODO: vain yksi lista näkyvissä, refaktorointi
 
@@ -9,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerms, setSearchTerms] = useState('')
+  const [successMessage, setSuccessMessage] = useState(null)
 
   
 
@@ -50,6 +53,8 @@ const App = () => {
             id: persons[i].id
           }
           handleUpdatingPerson(personObject)
+          setSuccessMessage(`${newName}'s number was updated`)
+          setTimeout(() => {setSuccessMessage(null)}, 5000)
         }
         break;
         
@@ -62,8 +67,11 @@ const App = () => {
         personService.create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
+          setSuccessMessage(`${newName} added to phonebook!`)
+          setTimeout(() => {setSuccessMessage(null)}, 5000)
           setNewName('')
           setNewNumber('')
+          
         })
 
       }
@@ -99,6 +107,8 @@ const handleDeletingPerson = (id, persons) =>{
 
     personService.deleteItem(id)
     .then( () => {setPersons(persons.filter(person => person.id !== id))})
+    setSuccessMessage(`${person.name} was removed!`)
+    setTimeout(() => {setSuccessMessage(null)}, 5000)
   }
 
   
@@ -107,6 +117,7 @@ const handleDeletingPerson = (id, persons) =>{
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Filter persons = {persons} onChange = {search} value = {searchTerms} />
     
       <h3>Add new</h3>
@@ -135,6 +146,7 @@ const Button = (props) => {
     <button onClick={props.onClick}>{props.name}</button>
   )
 }
+
 
 
 const PersonForm = (props) => {
