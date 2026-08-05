@@ -42,7 +42,15 @@ const App = () => {
     event.preventDefault()
     for(let i = 0; i < persons.length; i++){
       if(newName.toLowerCase() === persons[i].name.toLowerCase()){
-        alert(`${newName} is already added`)
+        //alert(`${newName} is already added`)
+        if (window.confirm(`${newName} is already in phonebook. Want to update the number?`)){
+          const personObject = {
+            name: newName,
+            number: newNumber, 
+            id: persons[i].id
+          }
+          handleUpdatingPerson(personObject)
+        }
         break;
         
       } else if(i === persons.length - 1){
@@ -72,6 +80,14 @@ const handleAddingPerson = (event) =>{
 
 const handleAddingNumber = (event) =>{
   setNewNumber(event.target.value)
+}
+
+const handleUpdatingPerson = (updatedPerson) => {
+  const person = persons.find(p => p.id === updatedPerson.id)
+  personService.update(updatedPerson.id, updatedPerson)
+  .then(response => {
+    setPersons(persons.map(person => person.id != updatedPerson.id ? person : response.data))
+  })
 }
 
 
