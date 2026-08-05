@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import personService from './services/persons'
 
 //TODO: vain yksi lista näkyvissä, refaktorointi
 
@@ -23,7 +24,13 @@ const App = () => {
       })
   }
 
-  useEffect(hook, [])
+  useEffect(() => {
+    personService
+      .getAll()
+      .then(response => {
+        setPersons(response.data)
+      })
+  }, [])
 
   const search = (event) => {
     console.log(event.target.value)
@@ -44,7 +51,7 @@ const App = () => {
           number: newNumber,
         }
         //setPersons(persons.concat(personObject))
-        axios.post('http://localhost:3001/persons', personObject)
+        personService.create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
           setNewName('')
@@ -67,6 +74,20 @@ const handleAddingNumber = (event) =>{
   setNewNumber(event.target.value)
 }
 
+
+const handleDeletingPerson = (id, persons) =>{
+  console.log(id)
+  const person = persons.find(person => person.id === id)
+ 
+  if (window.confirm(`Delete ${person.name}? `)) {
+
+    personService.deleteItem(id)
+    .then( () => {setPersons(persons.filter(person => person.id !== id))})
+  }
+
+  
+}
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -76,7 +97,7 @@ const handleAddingNumber = (event) =>{
       <PersonForm name = {newName} number = {newNumber} handleSubmit ={addPerson} handleAddingNumber = {handleAddingNumber} handleAddingPerson = {handleAddingPerson}/>
       
       <h3>Numbers</h3>
-      <Numbers persons = {persons} searchTerms = {searchTerms}/>
+      <Numbers persons = {persons} searchTerms = {searchTerms} handleDeletingPerson={handleDeletingPerson}/>
 
       
     </div>
@@ -89,10 +110,16 @@ const Numbers = (props) =>{
     <div>
       {(props.persons.filter((person) => 
       person.name.toLowerCase().includes(props.searchTerms.toLowerCase()))).map(person =>
-        <div key={person.name}>{person.name} {person.number}</div>)}
+        <div key={person.name}>{person.name} {person.number} {<Button name="delete" onClick = {() => props.handleDeletingPerson(person.id, props.persons)}/>}</div>)}
     </div>
   )
 }
+const Button = (props) => {
+  return (
+    <button onClick={props.onClick}>{props.name}</button>
+  )
+}
+
 
 const PersonForm = (props) => {
   return(
@@ -125,5 +152,6 @@ const Filter = (props) =>{
     
   )
 }
+
 
 export default App
