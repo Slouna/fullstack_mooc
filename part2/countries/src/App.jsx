@@ -52,16 +52,27 @@ const Countries = (props) => {
   const filtered = props.countries.filter((country) => 
       country.name.common.toLowerCase().includes(props.searchTerms.toLowerCase()))
 
-  if(filtered.length < 10){
+  if (filtered.length > 10){
+    return(
+      <div>Too many matches, please specify</div>
+    )
+  }
+  if(filtered.length < 10 && filtered.length > 1){
     return(
     <div>
       {filtered.map(country =>
         <div key={country.name.common}>{country.name.common} </div>)}
     </div>
   )
-  } else {
+  } if (filtered.length === 1){
+    const country = countryService.getOne(filtered[0].name.common)
+    console.log(country)
     return(
-      <div>Too many matches, please specify</div>
+      <div>{country}</div>
+    )
+  } else{
+    return (
+      <div>No matches</div>
     )
   }
   

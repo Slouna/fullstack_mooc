@@ -5,6 +5,11 @@ const getAll = () => {
   return axios.get(`${baseUrl}api/all`)
 }
 
+const getOne = (name) => {
+    return axios.get(`${baseUrl}/api/name/${name}`)
+}
+
 export default{
-    getAll: getAll
+    getAll: getAll,
+    getOne: getOne
 }
