@@ -1,6 +1,16 @@
 .success {
     color: rgb(45, 152, 40);
-  background: rgb(125, 98, 98);
+  background: rgb(210, 208, 208);
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.error {
+    color: rgb(255, 0, 0);
+  background: rgb(198, 193, 193);
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;

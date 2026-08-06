@@ -11,7 +11,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [searchTerms, setSearchTerms] = useState('')
-  const [successMessage, setSuccessMessage] = useState(null)
+  const [message, setMessage] = useState(null)
+  const [success, setSuccess] = useState(true)
 
   
 
@@ -53,8 +54,9 @@ const App = () => {
             id: persons[i].id
           }
           handleUpdatingPerson(personObject)
-          setSuccessMessage(`${newName}'s number was updated`)
-          setTimeout(() => {setSuccessMessage(null)}, 5000)
+          setSuccess(true)
+          setMessage(`${newName}'s number was updated`)
+          setTimeout(() => {setMessage(null)}, 5000)
         }
         break;
         
@@ -67,8 +69,9 @@ const App = () => {
         personService.create(personObject)
         .then(response => {
           setPersons(persons.concat(response.data))
-          setSuccessMessage(`${newName} added to phonebook!`)
-          setTimeout(() => {setSuccessMessage(null)}, 5000)
+          setSuccess(true)
+          setMessage(`${newName} added to phonebook!`)
+          setTimeout(() => {setMessage(null)}, 5000)
           setNewName('')
           setNewNumber('')
           
@@ -96,6 +99,16 @@ const handleUpdatingPerson = (updatedPerson) => {
   .then(response => {
     setPersons(persons.map(person => person.id != updatedPerson.id ? person : response.data))
   })
+  .catch(error => {
+    setSuccess(false)
+    setMessage(`${updatedPerson.name} was already deleted`)
+    setPersons(current =>
+    current.filter(person => person.id !== updatedPerson.id)
+  )
+    setTimeout(() => {setMessage(null)}, 5000)
+    
+
+  })
 }
 
 
@@ -107,8 +120,9 @@ const handleDeletingPerson = (id, persons) =>{
 
     personService.deleteItem(id)
     .then( () => {setPersons(persons.filter(person => person.id !== id))})
-    setSuccessMessage(`${person.name} was removed!`)
-    setTimeout(() => {setSuccessMessage(null)}, 5000)
+    setSuccess(true)
+    setMessage(`${person.name} was removed!`)
+    setTimeout(() => {setMessage(null)}, 5000)
   }
 
   
@@ -117,7 +131,7 @@ const handleDeletingPerson = (id, persons) =>{
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification message={message} success = {success}/>
       <Filter persons = {persons} onChange = {search} value = {searchTerms} />
     
       <h3>Add new</h3>
