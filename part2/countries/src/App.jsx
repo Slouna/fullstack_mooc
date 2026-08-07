@@ -25,9 +25,9 @@ const App = () => {
 
   return (
     <div>
-    <div>Jello</div>
+    <div>Type to search</div>
     <Filter countries = {countries} onChange = {search} value = {searchTerms} />
-    <Countries countries = {countries} searchTerms= {searchTerms} />
+    <Countries countries = {countries} searchTerms= {searchTerms} setSearchTerms = {setSearchTerms}/>
     </div>
 
   )
@@ -48,6 +48,12 @@ const Filter = (props) =>{
   )
 }
 
+const Button = (props) => {
+  return (
+    <button onClick={props.onClick}>{props.name}</button>
+  )
+}
+
 const Countries = (props) => {
   const filtered = props.countries.filter((country) => 
       country.name.common.toLowerCase().includes(props.searchTerms.toLowerCase()))
@@ -61,7 +67,8 @@ const Countries = (props) => {
     return(
     <div>
       {filtered.map(country =>
-        <div key={country.name.common}>{country.name.common} </div>)}
+        <div key={country.name.common}>{country.name.common} 
+        {<Button name="Show" onClick={() => props.setSearchTerms(country.name.common)} />}</div>)}
     </div>
   )
   } if (filtered.length === 1){
