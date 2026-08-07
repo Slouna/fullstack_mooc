@@ -1,6 +1,20 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
+/*
+var morgan = require('morgan')
+app.use(morgan('tiny'))
+*/
+
+// tekee saman kuin tiny mutta lisää perään request bodyn
+// https://stackoverflow.com/questions/67496399/how-to-get-the-request-body-in-morgan-middleware
+var morgan2 = require('morgan')
+morgan2.token('body', req => {
+  return JSON.stringify(req.body)
+})
+
+app.use(morgan2(':method :url :status :res[content-length] - :response-time ms  :body'))
+
 
 let persons = [
     {
@@ -66,6 +80,7 @@ app.post('/api/persons', (request, response) => {
     const id = Math.round(Math.random()*30000000)
     const person = request.body
 
+   
     if(!person.name){
       return response.status(400).json({ 
         error: 'Name is missing' 
@@ -91,6 +106,7 @@ app.post('/api/persons', (request, response) => {
     persons = persons.concat(person)
 
     response.json(person)
+    
 })
 
 
