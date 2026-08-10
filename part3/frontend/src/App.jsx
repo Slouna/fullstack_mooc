@@ -21,7 +21,7 @@ const App = () => {
   const hook = () => {
     console.log('effect')
     axios
-      .get('/api/persons')
+      .get(personService.getAll())
       .then(response => {
         console.log('promise fulfilled')
         setPersons(response.data)
