@@ -12,9 +12,10 @@ var morgan2 = require('morgan')
 morgan2.token('body', req => {
   return JSON.stringify(req.body)
 })
-
 app.use(morgan2(':method :url :status :res[content-length] - :response-time ms  :body'))
 
+const cors = require('cors')
+app.use(cors())
 
 let persons = [
     {
@@ -111,7 +112,7 @@ app.post('/api/persons', (request, response) => {
 
 
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`)
-  })
+  console.log(`Server running on port ${PORT}`)
+})
