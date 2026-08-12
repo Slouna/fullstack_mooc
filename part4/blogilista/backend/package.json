@@ -17,13 +17,13 @@
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
-    "mongoose": "^9.9.1",
-    "mongodb": "^7.5.0"
+    "mongodb": "^7.5.0",
+    "mongoose": "^9.9.1"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.8.1",
-    "globals": "^17.9.0"
+    "globals": "^17.10.0"
   }
 }
