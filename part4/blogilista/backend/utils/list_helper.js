@@ -9,7 +9,7 @@ const totalLikes = (blogs) => {
 }
 
 const favoriteBlog = (blogs) => {
-    if (blogs.length === 0 || blogs === null){
+    if (blogs === null|| blogs.length === 0 ){
         return "No blogs found"
     }
     let mostLiked = blogs[0]
@@ -23,7 +23,7 @@ const favoriteBlog = (blogs) => {
 
 
 const mostBlogs = (blogs) => {
-    if (blogs.length === 0 || blogs === null){
+    if (blogs === null|| blogs.length === 0 ){
         return "No blogs found"
     }
 
@@ -50,7 +50,7 @@ const mostBlogs = (blogs) => {
 }
 
 const mostLikes = (blogs) => {
-    if (blogs.length === 0 || blogs === null){
+    if (blogs === null|| blogs.length === 0 ){
         return "No blogs found"
     }
 
@@ -76,11 +76,36 @@ const mostLikes = (blogs) => {
 
 }
 
-  
-  module.exports = {
+module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
     mostBlogs,
     mostLikes
+}
+
+/* Asked chatgpt to edit my method to use reduce
+saving as comment to look on later when i could use reduce again
+
+const mostBlogs = (blogs) => {
+    if (blogs === null || blogs.length === 0) {
+      return "No blogs found"
+    }
+  
+    const authors = blogs.reduce((acc, blog) => {
+      const author = acc.find(a => a.name === blog.author)
+  
+      if (author) {
+        author.blogs += 1
+      } else {
+        acc.push({ name: blog.author, blogs: 1 })
+      }
+  
+      return acc
+    }, [])
+  
+    return authors.reduce((prev, current) =>
+      prev.blogs > current.blogs ? prev : current
+    )
   }
+  */
