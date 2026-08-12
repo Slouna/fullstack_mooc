@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+    "title": "kokkaus",
+    "author": "kape aihinen",
+    "url": "kape.com",
+    "likes": 14
+}
