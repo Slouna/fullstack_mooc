@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-    
-    "author": "jari tervo",
+    "title": "Palindromit",
+    "author": "Simo frangen",
     "url": "jt.org",
     "likes": 1
 }

@@ -121,3 +121,39 @@ test('blog without url gives status 400', async () => {
 
         assert.strictEqual(response.body.error, "Url is missing")
 })
+
+test('a blog can be deleted', async () => {
+    const blogsAtStart = (await api.get('/api/blogs')).body
+    const blogToDelete = blogsAtStart[0]
+  
+    await api
+      .delete(`/api/blogs/${blogToDelete.id}`)
+      .expect(204)
+  
+    const blogsAtEnd = (await api.get('/api/blogs')).body
+  
+    const ids = blogsAtEnd.map(n => n.id)
+    assert(!ids.includes(blogToDelete.id))
+  
+    assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
+  })
+
+  test ('likes can be updated', async () => {
+    const blogsAtStart = (await api.get('/api/blogs')).body
+    const blogToUpdate = blogsAtStart[0]
+
+    const updatedBlog = {
+        title: blogToUpdate.title,
+        author: blogToUpdate.author,
+        url: blogToUpdate.url,
+        likes: 100
+    }
+    await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .send(updatedBlog)
+        .expect('Content-Type', /application\/json/)
+
+    const response = (await api.get('/api/blogs')).body
+
+    assert.strictEqual(response[0].likes, 100)
+  })
