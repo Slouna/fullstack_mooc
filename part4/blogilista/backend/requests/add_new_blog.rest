@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InN0ZXZlIiwiaWQiOiI2YTdlZGZiZmMyMmY2ODBhYjM1ZWYwNDkiLCJpYXQiOjE3ODY2OTk3NDB9.P1_dmYND9ofmKLqHOK3HqGIeXabsCiuJ2uMO8eIZCwc
 
 {
-    "title": "Palindromit",
-    "author": "Simo frangen",
-    "url": "jt.org",
-    "likes": 1
+    "title": "hops",
+    "author": "aaa",
+    "url": "abcd.com",
+    "likes": 3
 }
