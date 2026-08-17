@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import NewBlogForm from './components/NewBlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -14,6 +16,7 @@ const App = () => {
   const [blogUrl, setBlogUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(true)
+  const addBlogRef = useRef()
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -29,6 +32,15 @@ const App = () => {
       blogService.setToken(user.token)
     }
   }, [])
+
+  const addBlog = async (blogObject) => {
+    const returnedBlog = await blogService.create(blogObject)
+    setBlogs(blogs.concat(returnedBlog))
+    addBlogRef.current.toggleVisibility()
+    setSuccess(true)
+    setMessage(`A new blog: ${blogObject.title}, by ${blogObject.author} added to to blog list!`)
+    setTimeout(() => {setMessage(null)}, 5000)
+  }
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -65,8 +77,9 @@ const App = () => {
     }
 
     const response = await blogService.create(blogObject)
-    console.log(response)
+    //console.log(response)
     setBlogs(blogs.concat(response))
+    addBlogRef.current.toggleVisibility()
     setSuccess(true)
     setMessage(`A new blog: ${blogTitle}, by ${blogAuthor} added to to blog list!`)
     setTimeout(() => {setMessage(null)}, 5000)
@@ -102,11 +115,10 @@ const App = () => {
 
         <h2>Add new blog</h2>
 
-        <NewBlogForm 
-        newBlogTitle={blogTitle} newBlogAuthor={blogAuthor} newBlogUrl={blogUrl}
-        handleTitleChange={handleTitleChange} handleAuthorChange={handleAuthorChange} 
-        handleUrlChange={handleUrlChange} addBlog={handleAddingBlog}/>
-
+        <Togglable buttonLabel = "Create new blog" ref = {addBlogRef}>
+          <NewBlogForm createBlog={addBlog}
+          />
+        </Togglable>
         <BlogList blogs = {blogs}/> 
         </div>
       )}
@@ -114,22 +126,6 @@ const App = () => {
   )
 }
 
-const NewBlogForm = (props) => {
-
-  return(
-    <form onSubmit={props.addBlog}>
-      <div>
-        <p>title</p>
-        <input value={props.newBlogTitle} onChange={props.handleTitleChange} />
-        <p>Author</p>
-        <input value={props.newBlogAuthor} onChange={props.handleAuthorChange}/>
-        <p>Url</p>
-        <input value={props.newBlogUrl} onChange={props.handleUrlChange}/>
-        <p><button type="submit">create</button></p>
-      </div>
-    </form>
-    )
-}
 
 const LogoutButton = (props) => {
   return(
