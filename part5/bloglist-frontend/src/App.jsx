@@ -5,15 +5,13 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlogForm from './components/NewBlogForm'
+import RegularButton from './components/RegularButton'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('') 
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [blogTitle, setBlogTitle] = useState('')
-  const [blogAuthor, setBlogAuthor] = useState('')
-  const [blogUrl, setBlogUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(true)
   const addBlogRef = useRef()
@@ -42,6 +40,13 @@ const App = () => {
     setTimeout(() => {setMessage(null)}, 5000)
   }
 
+  const updateBlog = async (blogObject) => {
+    await blogService.update(blogObject.id, blogObject)
+    const response = await blogService.getAll()
+    setBlogs(response)
+    
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -68,41 +73,10 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
-  const handleAddingBlog = async (event) => {
-    event.preventDefault()
-    const blogObject = {
-      title: blogTitle,
-      author: blogAuthor,
-      url: blogUrl
-    }
-
-    const response = await blogService.create(blogObject)
-    //console.log(response)
-    setBlogs(blogs.concat(response))
-    addBlogRef.current.toggleVisibility()
-    setSuccess(true)
-    setMessage(`A new blog: ${blogTitle}, by ${blogAuthor} added to to blog list!`)
-    setTimeout(() => {setMessage(null)}, 5000)
-    
-    setBlogTitle('')
-    setBlogAuthor('')
-    setBlogUrl('')
-  }
-
-  const handleTitleChange = (event) =>{
-    setBlogTitle(event.target.value)
-  }
-
-  const handleAuthorChange = (event) => {
-    setBlogAuthor(event.target.value)
-  }
-
-  const handleUrlChange = (event) => {
-    setBlogUrl(event.target.value)
-  }
+  
 
   return (
-    <div>
+    <div className='app'>
       <Notification message={message} success = {success}/>
       {!user && (<LoginForm username = {username} password = {password} 
       handleLogin = {handleLogin} 
@@ -111,15 +85,18 @@ const App = () => {
       {user && (
       <div>
         <p>{user.name} loggedin</p>
-        <LogoutButton onClick={handleLogOut} name='Log out'/>
+        <RegularButton onClick={handleLogOut} name='Log out'/>
 
         <h2>Add new blog</h2>
 
-        <Togglable buttonLabel = "Create new blog" ref = {addBlogRef}>
+        <Togglable buttonLabel = "Create new blog" closeLabel="Cancel" ref = {addBlogRef}>
           <NewBlogForm createBlog={addBlog}
           />
         </Togglable>
-        <BlogList blogs = {blogs}/> 
+        <h2>blogs</h2>
+         {blogs.map(blog =>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+      )}
         </div>
       )}
     </div>
@@ -127,19 +104,13 @@ const App = () => {
 }
 
 
-const LogoutButton = (props) => {
-  return(
-    <button onClick={props.onClick}>{props.name} </button>
-  )
-
-}
 
 const BlogList = (props) => {
   return(
     <div>
       <h2>blogs</h2>
       {props.blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateBlog={props.updateBlog} />
       )}
     </div>
   )

@@ -13,13 +13,7 @@ const NewBlogForm = ({createBlog}) => {
           author: blogAuthor,
           url: blogUrl
         })
-    /*
-        const response = await blogService.create(blogObject)
-        
-        setBlogs(blogs.concat(response))
-        */
-        
-        
+
         setBlogTitle('')
         setBlogAuthor('')
         setBlogUrl('')
