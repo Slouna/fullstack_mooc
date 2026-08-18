@@ -47,6 +47,30 @@ const App = () => {
     
   }
 
+  const removeBlog = async (blog) => {
+    if(window.confirm(`Do you want to remove the blog: ${blog.title} `)){
+      const response = await blogService.deleteBlog(blog.id)
+      console.log(response)
+      if (response === 0){
+        console.log("what")
+      }
+      if(response === 400){
+        setSuccess(false)
+        setMessage("You cannot remove blogs that other users have added")
+      } else if(response === 401) {
+        setSuccess(false)
+        setMessage("Invalid token")
+      }else {
+        setSuccess(true)
+        setMessage(`${blog.title} deleted!`)
+      }
+      setTimeout(() => {setMessage(null)}, 5000)
+    }
+    const allBlogs = await blogService.getAll()
+    setBlogs(allBlogs)
+    
+  }
+
   const handleLogin = async (event) => {
     event.preventDefault()
     
@@ -74,7 +98,6 @@ const App = () => {
   }
 
   
-
   return (
     <div className='app'>
       <Notification message={message} success = {success}/>
@@ -94,8 +117,8 @@ const App = () => {
           />
         </Togglable>
         <h2>blogs</h2>
-         {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} />
+         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} userId={user.id} />
       )}
         </div>
       )}

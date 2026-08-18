@@ -1,7 +1,15 @@
 .app{
   display: flex;
+  width: 90%;
+  flex-direction: column;
   padding: 1%;
 }
+.remove{
+  background-color: blue;
+  color: white;
+  border-radius: 5px;
+}
+
 .success {
     color: rgb(45, 152, 40);
   background: rgb(210, 208, 208);
@@ -27,7 +35,7 @@
   flex-direction: column;
   
   width: 100%;
-  border-radius: 1px;
+  border-radius: 10px;
   border-color: black;
   border-style: solid;
   padding: 1%;

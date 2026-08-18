@@ -65,7 +65,7 @@ blogsRouter.delete('/:id', userExtractor, async (request, response) => {
     await Blog.findByIdAndDelete(request.params.id)
     response.status(204).end()
   } else{
-    return response.status(400).json({ error: 'cannot remove blogs you have not made' })
+    return response.status(400).json({ error: 'cannot remove blogs you have not made' }).end()
   }
   
 })

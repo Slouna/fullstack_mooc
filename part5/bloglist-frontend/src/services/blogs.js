@@ -27,5 +27,21 @@ const update = async (id, newObject) => {
 }
 
 
+//korjaa response try catch 
+const deleteBlog = async(id) => { 
+  const config = {
+    headers: { Authorization: token }
+  }
 
-export default { getAll, create, update, setToken }
+  try{
+    const response = await axios.delete(`${baseUrl}/${id}`, config)
+    return response.status
+  }
+  catch(error){
+    return error.response.status
+  }
+
+}
+
+
+export default { getAll, create, update, setToken, deleteBlog }

@@ -1,6 +1,6 @@
-const RegularButton = (props) => {
+const RegularButton = ({name, onClick, className}) => {
     return(
-      <button onClick={props.onClick}>{props.name} </button>
+      <button className={className} onClick={onClick}>{name} </button>
     )
   
   }
