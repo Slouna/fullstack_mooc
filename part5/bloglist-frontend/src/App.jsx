@@ -9,7 +9,7 @@ import RegularButton from './components/RegularButton'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
@@ -19,7 +19,7 @@ const App = () => {
   useEffect(() => {
     blogService.getAll().then(blogs =>
       setBlogs( blogs )
-    )  
+    )
   }, [])
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const App = () => {
     await blogService.update(blogObject.id, blogObject)
     const response = await blogService.getAll()
     setBlogs(response)
-    
+
   }
 
   const removeBlog = async (blog) => {
@@ -52,14 +52,14 @@ const App = () => {
       const response = await blogService.deleteBlog(blog.id)
       console.log(response)
       if (response === 0){
-        console.log("what")
+        console.log('what')
       }
       if(response === 400){
         setSuccess(false)
-        setMessage("You cannot remove blogs that other users have added")
+        setMessage('You cannot remove blogs that other users have added')
       } else if(response === 401) {
         setSuccess(false)
-        setMessage("Invalid token")
+        setMessage('Invalid token')
       }else {
         setSuccess(true)
         setMessage(`${blog.title} deleted!`)
@@ -68,17 +68,17 @@ const App = () => {
     }
     const allBlogs = await blogService.getAll()
     setBlogs(allBlogs)
-    
+
   }
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({ username, password })
       window.localStorage.setItem(
         'loggedBlogappUser', JSON.stringify(user)
-      ) 
+      )
 
       blogService.setToken(user.token)
       setUser(user)
@@ -86,9 +86,9 @@ const App = () => {
       setPassword('')
     } catch {
       setSuccess(false)
-      setMessage(`Wrong username or password`)
-        setTimeout(() => {setMessage(null)}, 5000)
-      
+      setMessage('Wrong username or password')
+      setTimeout(() => {setMessage(null)}, 5000)
+
     }
   }
 
@@ -97,29 +97,29 @@ const App = () => {
     window.localStorage.removeItem('loggedBlogappUser')
   }
 
-  
+
   return (
     <div className='app'>
       <Notification message={message} success = {success}/>
-      {!user && (<LoginForm username = {username} password = {password} 
-      handleLogin = {handleLogin} 
-      setUsername = {setUsername} setPassword = {setPassword}/>
+      {!user && (<LoginForm username = {username} password = {password}
+        handleLogin = {handleLogin}
+        setUsername = {setUsername} setPassword = {setPassword}/>
       )}
       {user && (
-      <div>
-        <p>{user.name} loggedin</p>
-        <RegularButton onClick={handleLogOut} name='Log out'/>
+        <div>
+          <p>{user.name} loggedin</p>
+          <RegularButton onClick={handleLogOut} name='Log out'/>
 
-        <h2>Add new blog</h2>
+          <h2>Add new blog</h2>
 
-        <Togglable buttonLabel = "Create new blog" closeLabel="Cancel" ref = {addBlogRef}>
-          <NewBlogForm createBlog={addBlog}
-          />
-        </Togglable>
-        <h2>blogs</h2>
-         {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-        <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} userId={user.id} />
-      )}
+          <Togglable buttonLabel = "Create new blog" closeLabel="Cancel" ref = {addBlogRef}>
+            <NewBlogForm createBlog={addBlog}
+            />
+          </Togglable>
+          <h2>blogs</h2>
+          {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
+            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} userId={user.id} />
+          )}
         </div>
       )}
     </div>
@@ -142,7 +142,7 @@ const BlogList = (props) => {
 const LoginForm = (props) => {
   return(
     <div>
-    <h2>Login</h2>
+      <h2>Login</h2>
       <form onSubmit={props.handleLogin}>
         <div>
           <label>
@@ -166,7 +166,7 @@ const LoginForm = (props) => {
         </div>
         <button type="submit">login</button>
       </form>
-      </div>
+    </div>
   )
 
 }

@@ -15,7 +15,7 @@ const create = async newObject => {
   const config = {
     headers: { Authorization: token }
   }
-  const response = await axios.post(baseUrl, newObject, config)  
+  const response = await axios.post(baseUrl, newObject, config)
   return response.data
 }
 
@@ -27,8 +27,8 @@ const update = async (id, newObject) => {
 }
 
 
-//korjaa response try catch 
-const deleteBlog = async(id) => { 
+//korjaa response try catch
+const deleteBlog = async(id) => {
   const config = {
     headers: { Authorization: token }
   }
