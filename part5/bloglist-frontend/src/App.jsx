@@ -6,6 +6,7 @@ import Notification from './components/Notification'
 import Togglable from './components/Togglable'
 import NewBlogForm from './components/NewBlogForm'
 import RegularButton from './components/RegularButton'
+import LoginForm from './components/LoginForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -116,7 +117,7 @@ const App = () => {
       )}
       {user && (
         <div>
-          <p>{user.name} loggedin</p>
+          <p>{user.name} Logged in</p>
           <RegularButton onClick={handleLogOut} name='Log out'/>
 
           <h2>Add new blog</h2>
@@ -136,36 +137,5 @@ const App = () => {
 }
 
 
-const LoginForm = (props) => {
-  return(
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={props.handleLogin}>
-        <div>
-          <label>
-            Username
-            <input
-              type="text"
-              value={props.username}
-              onChange={({ target }) => props.setUsername(target.value)}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Password
-            <input
-              type="password"
-              value={props.password}
-              onChange={({ target }) => props.setPassword(target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">login</button>
-      </form>
-    </div>
-  )
-
-}
 
 export default App
