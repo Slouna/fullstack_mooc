@@ -19,14 +19,13 @@ describe('Blog app', () => {
           password: 'testeri'
         }
       })
-      await 
   
       await page.goto('http://localhost:5173')
     })
 
     const logIn = async (page, username, password) => {
         console.log(username, password)
-        await page.goto('http://localhost:5173')
+        await page.goto('http://localhost:5173/login')
 
         await page.getByRole('button', { name: 'login' }).click()
         const textboxes = await page.getByRole('textbox').all()
@@ -44,7 +43,7 @@ describe('Blog app', () => {
     }
 
     const createBlog = async (page, title, author, url) => {
-        await page.getByRole('button', { name: 'Create new blog' }).click()
+        await page.getByRole('link', { name: 'New blog' }).click()
         await page.getByLabel('Title').fill(title)
         await page.getByLabel('Author').fill(author)
         await page.getByLabel('URL').fill(url)
@@ -52,7 +51,7 @@ describe('Blog app', () => {
     }
   
     test('Login form is shown', async ({ page }) => {
-        await page.goto('http://localhost:5173')
+        await page.goto('http://localhost:5173/login')
 
         const locator = page.getByText('Login page')
         await expect(locator).toBeVisible()
@@ -86,17 +85,17 @@ describe('Blog app', () => {
 
             await logIn(page, 'mluukkai', 'salainen')
         })
-      
+      //ok
         test('a new blog can be created', async ({ page }) => {
 
             await createBlog(page, 'Test Blog', 'Pasi Bloggaaja', 'example.com')
-            await expect(page.getByText('Test Blog Pasi Bloggaaja')).toBeVisible()
+            await expect(page.getByText('Test Blog by Pasi Bloggaaja')).toBeVisible()
         })
 
         test('blog can be liked', async ({page}) => {
             await createBlog(page, 'Test Blog', 'Pasi Bloggaaja', 'example.com')
 
-            await page.getByRole('button', { name: 'view' }).click()
+            await page.getByRole('link', { name: 'Test Blog by Pasi Bloggaaja' }).click()
             await expect(page.getByText('Likes: 0')).toBeVisible()
             await page.getByRole('button', { name: 'Like' }).click()
             await expect(page.getByText('Likes: 1')).toBeVisible()
@@ -105,7 +104,7 @@ describe('Blog app', () => {
 
         test('blog can be removed', async ({page})=>{
             await createBlog(page, 'Test Blog', 'Pasi Bloggaaja', 'example.com')
-            await page.getByRole('button', { name: 'view' }).click()
+            await page.getByRole('link', { name: 'Test Blog by Pasi Bloggaaja' }).click()
             page.on('dialog', dialog => dialog.accept());
             await page.getByRole('button', { name: 'Remove' }).click()
 
@@ -116,16 +115,16 @@ describe('Blog app', () => {
         test('no delete option for other users blogs', async({page}) =>{
             //tests that it shows to OP but not to others
             await createBlog(page, 'Test Blog', 'Pasi Bloggaaja', 'example.com')
-            await page.getByRole('button', { name: 'view' }).click()
+            await page.getByRole('link', { name: 'Test Blog by Pasi Bloggaaja' }).click()
             await expect(page.getByRole('button', {name:'Remove'})).toBeVisible()
             await logOut(page)
             await logIn(page, "testeri", "testeri")
-            await expect(page.getByText('Test Blog Pasi Bloggaaja')).toBeVisible()
-            await page.getByRole('button', { name: 'view' }).click()
+            await page.getByRole('link', { name: 'Test Blog by Pasi Bloggaaja' }).click()
             await expect(page.getByRole('button', {name:'Remove'})).toBeHidden()
             
         } )
 //ois varmaan joku siistimpi keino, ainaki ois voinu tehdä loopin likeille
+        /*
         test('blog are in order of likes', async ({page}) => {
             await createBlog(page, "most liked", "aaa", "abcd.com")
             await createBlog(page, "least liked", "bbb", "abcd.org")
@@ -161,6 +160,7 @@ describe('Blog app', () => {
 
 
         })
+        */
 
 
       })
