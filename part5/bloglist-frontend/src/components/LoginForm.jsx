@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
+import { TextField, Button, colors } from '@mui/material'
 
 const LoginForm =  (props) => {
   const [username, setUsername] = useState('')
@@ -42,26 +43,21 @@ const LoginForm =  (props) => {
         <h2>Login page</h2>
         <form onSubmit={handleLogin}>
           <div>
-            <label>
-              Username
-              <input
-                type="text"
-                value={props.username}
+            <TextField
+            label= "Username"
+              value={props.username}
                 onChange={({ target }) => setUsername(target.value)}
               />
-            </label>
           </div>
           <div>
-            <label>
-              Password
-              <input
-                type="password"
+            <TextField
+            label= "Password"
+            type='password'
                 value={props.password}
                 onChange={({ target }) => setPassword(target.value)}
               />
-            </label>
           </div>
-          <button type="submit">login</button>
+          <Button type="submit" variant='contained' style={{marginTop: 10}}>login</Button>
         </form>
       </div>
     )

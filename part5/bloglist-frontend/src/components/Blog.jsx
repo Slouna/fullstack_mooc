@@ -2,6 +2,8 @@ import Togglable from './Togglable'
 import RegularButton from './RegularButton'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { TextField, Button, colors } from '@mui/material'
+import { red } from '@mui/material/colors'
 
 
 /*
@@ -29,20 +31,30 @@ const Blog = ({ blog, updateBlog, removeBlog, userId }) => {
   }
 
 
+
   console.log(userId)
   return(
     <div className="blogCard">
-      <p>{blog.title} by {blog.author}</p>
-        <p>{blog.url}</p>
-        <p>
-        Likes: {blog.likes}
-          {userId && <RegularButton name= "Like" onClick={() => handleLike(blog)}/>}
-        </p>
-        <p>{blog.content}</p>
+      <p style={{fontSize: 30}}>{blog.title}</p>
+      <p> by {blog.author}</p>
+        <p></p>
+        <a href='{blog.url}'>{blog.url}</a>
         <p>{blog.user.name}</p>
-        {blog.user.id === userId &&
-        <p>{<RegularButton name="Remove" onClick={() => handleRemove(blog)} className="remove"/>}</p>
-        }
+        
+       
+        
+        <div style={{display: 'flex', marginTop:20}}>
+          <p>
+        Likes: {blog.likes}
+        </p>
+        <div>
+          {userId && <Button variant="contained" style={{marginLeft: 5, marginRight: 5}} onClick={() => handleLike(blog)}> Like </Button>}
+          </div>
+          {blog.user.id === userId &&
+          <div>{<Button variant="contained" style={{backgroundColor: "#e53935", marginLeft: 5, marginRight: 5}} onClick={() => handleRemove(blog)} className="remove">Remove</Button>}</div>
+          }
+          
+        </div>
     </div>
   )
 }

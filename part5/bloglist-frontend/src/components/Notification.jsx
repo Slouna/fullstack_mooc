@@ -1,18 +1,20 @@
+import { Alert } from '@mui/material'
+
 const Notification = ({ message, success }) => {
   if (message === null) {
     return null
   }
   if (success){
     return(
-      <div className="success">
+      <Alert style={{ marginTop: 10, marginBottom: 10 }} severity={'success'}>
         {message}
-      </div>
+      </Alert>
     )
   } else{
     return(
-      <div className="error">
+      <Alert style={{ marginTop: 10, marginBottom: 10 }} severity={'error'}>
         {message}
-      </div>
+      </Alert>
     )
   }
 

@@ -13,6 +13,7 @@ import RegularButton from './components/RegularButton'
 import LoginForm from './components/LoginForm'
 import Blogs from './services/blogs'
 import BlogList from './components/BlogList'
+import { AppBar, Container, Toolbar, Button, colors } from '@mui/material'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -106,18 +107,33 @@ const App = () => {
   const padding = {
     padding: 5
   }
+  const hooverStyle = { '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' } }
 
 
   return (
+    <Container>
     <div>
       <Notification message={message} success = {success}/>
       <div>
-        <div>
-          <Link style={padding} to="/">Blogs</Link>
-          {user && <Link style={padding} to="/create">New Blog</Link>}
-          {!user && <Link style={padding} to="/login">Log In</Link>}
-          {user&& <RegularButton onClick={handleLogOut} name='Log out'/>}
-        </div>
+        <AppBar position='static' >
+          <Toolbar>
+            BlogApp
+            <div style={{display: 'flex'}}>
+            <Button color= "inherit"component = {Link} to="/" sx={hooverStyle}>
+              Blogs
+            </Button>
+            {user &&  <Button color= "inherit" component ={Link} to="/create" sx={hooverStyle}>
+              New Blog
+            </Button>}
+            {!user && <Button color= "inherit" component = {Link} to="/login" sx={hooverStyle}>
+              Log In
+            </Button>}
+            {user&& <Button style={{}} color = "inherit" onClick={handleLogOut} sx={hooverStyle}>
+              Log out
+            </Button>}
+            </div>
+          </Toolbar>
+        </AppBar>
 
         <Routes>
           {// different params if user is not logged in
@@ -142,32 +158,7 @@ const App = () => {
 
       </div>
     </div>
-    /*
-    <div className='app'>
-      <Notification message={message} success = {success}/>
-      {!user && (<LoginForm username = {username} password = {password}
-        handleLogin = {handleLogin}
-        setUsername = {setUsername} setPassword = {setPassword}/>
-      )}
-      {user && (
-        <div>
-          <p>{user.name} Logged in</p>
-          <RegularButton onClick={handleLogOut} name='Log out'/>
-
-          <h2>Add new blog</h2>
-
-          <Togglable buttonLabel = "Create new blog" closeLabel="Cancel" ref = {addBlogRef}>
-            <NewBlogForm createBlog={addBlog}
-            />
-          </Togglable>
-          <h2>blogs</h2>
-          {blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-            <Blog key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} userId={user.id} />
-          )}
-        </div>
-      )}
-    </div>
-    */
+    </Container>
   )
 }
 
