@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
-import { TextField, Button, colors } from '@mui/material'
+import { TextField, Button } from '@mui/material'
 
 const LoginForm =  (props) => {
   const [username, setUsername] = useState('')

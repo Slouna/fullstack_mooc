@@ -36,23 +36,6 @@ const MainPage = () => {
     }
   }, [])
 
-  const addBlog = async (blogObject) => {
-    try{
-      const returnedBlog = await blogService.create(blogObject)
-      console.log(returnedBlog)
-      setBlogs(blogs.concat(returnedBlog))
-      addBlogRef.current.toggleVisibility()
-      setSuccess(true)
-      setMessage(`A new blog: ${blogObject.title}, by ${blogObject.author} added to to blog list!`)
-      setTimeout(() => {setMessage(null)}, 5000)
-    } catch(error){
-      setSuccess(false)
-      setMessage('Adding new blog failed')
-      setTimeout(() => {setMessage(null)}, 5000)
-    }
-
-
-  }
 
   const updateBlog = async (blogObject) => {
     await blogService.update(blogObject.id, blogObject)

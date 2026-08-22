@@ -1,5 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import {
   Routes, Route, Link, useMatch
 } from 'react-router-dom'
@@ -8,7 +7,7 @@ import blogService from './services/blogs'
 import Notification from './components/Notification'
 import NewBlogForm from './components/NewBlogForm'
 import LoginForm from './components/LoginForm'
-import { AppBar, Container, Toolbar, Button} from '@mui/material'
+import { AppBar, Container, Toolbar, Button } from '@mui/material'
 import MainPage from './components/MainPage'
 
 const App = () => {
@@ -16,8 +15,6 @@ const App = () => {
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(true)
-  const addBlogRef = useRef()
-  const navigate = useNavigate()
   const match = useMatch('/blogs/:id')
   const blog = match
     ? blogs.find(blog => blog.id === match.params.id)
@@ -98,9 +95,6 @@ const App = () => {
 
   }
 
-  const padding = {
-    padding: 5
-  }
   const hooverStyle = { '&:hover': { bgcolor: 'rgba(255,255,255,0.3)' } }
 
 
