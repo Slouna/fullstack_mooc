@@ -5,20 +5,14 @@ import {
 } from 'react-router-dom'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
-import loginService from './services/login'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable'
 import NewBlogForm from './components/NewBlogForm'
-import RegularButton from './components/RegularButton'
 import LoginForm from './components/LoginForm'
-import Blogs from './services/blogs'
-import BlogList from './components/BlogList'
-import { AppBar, Container, Toolbar, Button, colors } from '@mui/material'
+import { AppBar, Container, Toolbar, Button} from '@mui/material'
+import MainPage from './components/MainPage'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [success, setSuccess] = useState(true)
@@ -53,15 +47,15 @@ const App = () => {
       setSuccess(true)
       setMessage(`A new blog: ${blogObject.title}, by ${blogObject.author} added to to blog list!`)
       setTimeout(() => {setMessage(null)}, 5000)
-      
+
     } catch(error){
       console.log(error)
       setSuccess(false)
-      setMessage(`Adding new blog failed`)
+      setMessage('Adding new blog failed')
       setTimeout(() => {setMessage(null)}, 5000)
     }
-    
-    
+
+
   }
 
   const updateBlog = async (blogObject) => {
@@ -90,9 +84,9 @@ const App = () => {
       }
       setTimeout(() => {setMessage(null)}, 5000)
     }
-    
+
     const allBlogs = await blogService.getAll()
-    
+
     setBlogs(allBlogs)
 
 
@@ -112,149 +106,53 @@ const App = () => {
 
   return (
     <Container>
-    <div>
-      <Notification message={message} success = {success}/>
       <div>
-        <AppBar position='static' >
-          <Toolbar>
+        <div>
+          <AppBar position='static' >
+            <Toolbar style={{ display:'flex' }}>
             BlogApp
-            <div style={{display: 'flex'}}>
-            <Button color= "inherit"component = {Link} to="/" sx={hooverStyle}>
+              <div style={{ display: 'flex', position: 'relative', marginLeft:'auto', marginRight:0 }}>
+                <Button color= "inherit"component = {Link} to="/" sx={hooverStyle}>
               Blogs
-            </Button>
-            {user &&  <Button color= "inherit" component ={Link} to="/create" sx={hooverStyle}>
+                </Button>
+                {user &&  <Button color= "inherit" component ={Link} to="/create" sx={hooverStyle}>
               New Blog
-            </Button>}
-            {!user && <Button color= "inherit" component = {Link} to="/login" sx={hooverStyle}>
+                </Button>}
+                {!user && <Button color= "inherit" component = {Link} to="/login" sx={hooverStyle}>
               Log In
-            </Button>}
-            {user&& <Button style={{}} color = "inherit" onClick={handleLogOut} sx={hooverStyle}>
+                </Button>}
+                {user&& <Button style={{}} color = "inherit" onClick={handleLogOut} sx={hooverStyle}>
               Log out
-            </Button>}
-            </div>
-          </Toolbar>
-        </AppBar>
+                </Button>}
+              </div>
+            </Toolbar>
 
-        <Routes>
-          {// different params if user is not logged in
-          }
-          {user && <Route path="/blogs/:id" element={ blog 
-            ?
-            <Blog blog={blog} updateBlog={updateBlog} removeBlog ={removeBlog} userId={user.id}/>
-            : <p>Could not find a blog</p>
-          } />}
-          {!user && <Route path="/blogs/:id" element={
-            <Blog blog={blog} updateBlog={updateBlog} removeBlog ={removeBlog} userId={null}/>
-          } />}
+          </AppBar>
+          <Notification message={message} success = {success}/>
+          <Routes>
+            {// different params if user is not logged in
+            }
+            {user && <Route path="/blogs/:id" element={ blog
+              ?
+              <Blog blog={blog} updateBlog={updateBlog} removeBlog ={removeBlog} userId={user.id}/>
+              : <p>Could not find a blog</p>
+            } />}
+            {!user && <Route path="/blogs/:id" element={
+              <Blog blog={blog} updateBlog={updateBlog} removeBlog ={removeBlog} userId={null}/>
+            } />}
 
-          <Route path="/login" element={
-            <LoginForm setUser={setUser} setMessage={setMessage} setSuccess={setSuccess}/>
-          } />
-          <Route path="/create" element={
-            <NewBlogForm createBlog={addBlog}/>
-          } />
-          <Route path="/" element={<MainPage />} />
-        </Routes>
+            <Route path="/login" element={
+              <LoginForm setUser={setUser} setMessage={setMessage} setSuccess={setSuccess}/>
+            } />
+            <Route path="/create" element={
+              <NewBlogForm createBlog={addBlog}/>
+            } />
+            <Route path="/" element={<MainPage />} />
+          </Routes>
 
+        </div>
       </div>
-    </div>
     </Container>
   )
 }
-
-const MainPage = () => {
-  const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [message, setMessage] = useState(null)
-  const [success, setSuccess] = useState(true)
-  const addBlogRef = useRef()
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [])
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
-  }, [])
-
-  const addBlog = async (blogObject) => {
-    try{
-      const returnedBlog = await blogService.create(blogObject)
-      console.log(returnedBlog)
-      setBlogs(blogs.concat(returnedBlog))
-      addBlogRef.current.toggleVisibility()
-      setSuccess(true)
-      setMessage(`A new blog: ${blogObject.title}, by ${blogObject.author} added to to blog list!`)
-      setTimeout(() => {setMessage(null)}, 5000)
-    } catch(error){
-      setSuccess(false)
-      setMessage(`Adding new blog failed`)
-      setTimeout(() => {setMessage(null)}, 5000)
-    }
-    
-    
-  }
-
-  const updateBlog = async (blogObject) => {
-    await blogService.update(blogObject.id, blogObject)
-    const response = await blogService.getAll()
-    setBlogs(response)
-
-  }
-
-  const removeBlog = async (blog) => {
-    if(window.confirm(`Do you want to remove the blog: ${blog.title} `)){
-      const response = await blogService.deleteBlog(blog.id)
-      console.log(response)
-      if (response === 0){
-        console.log('what')
-      }
-      if(response === 400){
-        setSuccess(false)
-        setMessage('You cannot remove blogs that other users have added')
-      } else if(response === 401) {
-        setSuccess(false)
-        setMessage('Invalid token')
-      }else {
-        setSuccess(true)
-        setMessage(`${blog.title} deleted!`)
-      }
-      setTimeout(() => {setMessage(null)}, 5000)
-    }
-    const allBlogs = await blogService.getAll()
-    setBlogs(allBlogs)
-
-  }
-
-
-  return(
-    <div className='app'>
-    <Notification message={message} success = {success}/>
-  
-      <div>
-
-        <h2>blogs</h2>
-        {user && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <BlogList key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog} userId={user.id} />
-        )}
-         {!user && blogs.sort((a, b) => b.likes - a.likes).map(blog =>
-          <BlogList key={blog.id} blog={blog} updateBlog={updateBlog} removeBlog={removeBlog}  />
-        )}
-
-      </div>
-  </div>
-  )
-}
-
-
 export default App

@@ -29,24 +29,24 @@ const NewBlogForm = ({ createBlog }) => {
       <form onSubmit={addBlog}>
         <div>
           <TextField
-          label="Title" 
-          
-          value={blogTitle} 
-          onChange={event => setBlogTitle(event.target.value)} 
+            label="Title"
+
+            value={blogTitle}
+            onChange={event => setBlogTitle(event.target.value)}
           />
           <p></p>
           <TextField
-          label="Author" 
-          value={blogAuthor} onChange={event => setBlogAuthor(event.target.value)}
+            label="Author"
+            value={blogAuthor} onChange={event => setBlogAuthor(event.target.value)}
           />
           <p>
           </p>
           <TextField
-          label = "URL" 
-          value={blogUrl} 
-          onChange={event => setBlogUrl(event.target.value)}
+            label = "URL"
+            value={blogUrl}
+            onChange={event => setBlogUrl(event.target.value)}
           />
-          
+
           <p><Button type="submit" variant='contained'>Create</Button></p>
         </div>
       </form>

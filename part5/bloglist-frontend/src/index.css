@@ -1,5 +1,7 @@
 .app{
   display: flex;
+  margin-left: auto;
+  margin-right: auto;
   width: 90%;
   flex-direction: column;
   padding: 1%;
@@ -34,11 +36,15 @@
   display: flex;
   flex-direction: column;
   
-  width: 100%;
+  background-color: antiquewhite;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
   border-radius: 10px;
   border-color: black;
   border-style: solid;
   padding: 1%;
-  margin: 1%;
+  margin-top: 2%;
+  
   
 }

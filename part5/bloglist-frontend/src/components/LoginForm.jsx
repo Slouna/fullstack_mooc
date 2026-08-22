@@ -38,30 +38,30 @@ const LoginForm =  (props) => {
   }
 
 
-    return(
-      <div>
-        <h2>Login page</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            <TextField
+  return(
+    <div>
+      <h2>Login page</h2>
+      <form onSubmit={handleLogin}>
+        <div>
+          <TextField
             label= "Username"
-              value={props.username}
-                onChange={({ target }) => setUsername(target.value)}
-              />
-          </div>
-          <div>
-            <TextField
+            value={props.username}
+            onChange={({ target }) => setUsername(target.value)}
+          />
+        </div>
+        <div>
+          <TextField
             label= "Password"
             type='password'
-                value={props.password}
-                onChange={({ target }) => setPassword(target.value)}
-              />
-          </div>
-          <Button type="submit" variant='contained' style={{marginTop: 10}}>login</Button>
-        </form>
-      </div>
-    )
-  
-  }
+            value={props.password}
+            onChange={({ target }) => setPassword(target.value)}
+          />
+        </div>
+        <Button type="submit" variant='contained' style={{ marginTop: 10 }}>login</Button>
+      </form>
+    </div>
+  )
 
-  export default LoginForm
+}
+
+export default LoginForm

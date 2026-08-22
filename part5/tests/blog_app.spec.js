@@ -56,8 +56,8 @@ describe('Blog app', () => {
         const locator = page.getByText('Login page')
         await expect(locator).toBeVisible()
         
-        await expect(page.getByText('Username')).toBeVisible()
-        await expect(page.getByText('Password')).toBeVisible()
+        await expect(page.getByLabel('Username')).toBeVisible()
+        await expect(page.getByLabel('Password')).toBeVisible()
 
     })
 

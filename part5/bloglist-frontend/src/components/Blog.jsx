@@ -35,26 +35,26 @@ const Blog = ({ blog, updateBlog, removeBlog, userId }) => {
   console.log(userId)
   return(
     <div className="blogCard">
-      <p style={{fontSize: 30}}>{blog.title}</p>
+      <p style={{ fontSize: 30 }}>{blog.title}</p>
       <p> by {blog.author}</p>
-        <p></p>
-        <a href='{blog.url}'>{blog.url}</a>
-        <p>{blog.user.name}</p>
-        
-       
-        
-        <div style={{display: 'flex', marginTop:20}}>
-          <p>
+      <p></p>
+      <a href='{blog.url}'>{blog.url}</a>
+      <p>{blog.user.name}</p>
+
+
+
+      <div style={{ display: 'flex', marginTop:20 }}>
+        <p>
         Likes: {blog.likes}
         </p>
         <div>
-          {userId && <Button variant="contained" style={{marginLeft: 5, marginRight: 5}} onClick={() => handleLike(blog)}> Like </Button>}
-          </div>
-          {blog.user.id === userId &&
-          <div>{<Button variant="contained" style={{backgroundColor: "#e53935", marginLeft: 5, marginRight: 5}} onClick={() => handleRemove(blog)} className="remove">Remove</Button>}</div>
-          }
-          
+          {userId && <Button variant="contained" style={{ marginLeft: 5, marginRight: 5 }} onClick={() => handleLike(blog)}> Like </Button>}
         </div>
+        {blog.user.id === userId &&
+          <div>{<Button variant="contained" style={{ backgroundColor: '#e53935', marginLeft: 5, marginRight: 5 }} onClick={() => handleRemove(blog)} className="remove">Remove</Button>}</div>
+        }
+
+      </div>
     </div>
   )
 }
